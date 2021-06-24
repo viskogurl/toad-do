@@ -1,0 +1,35 @@
+{
+  "app-type": "express",
+
+  "middleware": {
+    "express-body-parser": {
+      "enabled": true,
+      "priority": 10,
+      "module": {
+        "name": "express",
+        "method": "json"
+      }
+    },
+    "cookie-parser": {
+      "enabled": true,
+      "priority": 11,
+      "module": {
+        "name": "cookie-parser",
+        "method": null
+      }
+    }
+  },
+
+  "dependencies": {
+    "prod": {
+      "cookie-parser": null,
+      "dotenv": null,
+      "express": "^4.17.1",
+      "kraken-js": "^2.3.0",
+      "mongoose": "^5.12.14"
+    },
+    "dev": {
+      "nodemon": null
+    }
+  }
+}

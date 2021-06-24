@@ -1,0 +1,24 @@
+{
+  "name": "toad-do",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "config": "node ./utils/mundler/mundler.js",
+    "start": "nodemon app.js",
+    "serve": "npm run config && npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "kraken-js": "^2.3.0",
+    "mongoose": "^5.12.14"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
