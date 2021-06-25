@@ -1,19 +1,10 @@
 {
-  "middleware": {
-    "express-body-parser": {
-      "enabled": true,
-      "priority": 10,
+  "middleware" : {
+    "session": null,
+    "appsec": null,
+    "router": {
       "module": {
-        "name": "express",
-        "method": "json"
-      }
-    },
-    "cookie-parser": {
-      "enabled": true,
-      "priority": 11,
-      "module": {
-        "name": "cookie-parser",
-        "method": null
+        "arguments": [{ "directory": "path:./controllers" }]
       }
     }
   }
