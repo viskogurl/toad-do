@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* Split the screen in half */
+    .split {
+      height: 100%;
+      width: 50%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      overflow: hidden;
+      padding-top: 20px;
+    }
+
+    /* Control the left side */
+    .left {
+      left: 7%;
+    }
+
+    /* Control the right side */
+    .right {
+      right: 7%;
+    }
+
+    /* If you want the content centered horizontally and vertically */
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .cool-words {
+      font-family: optima, arial, helvetica;
+      font-weight: normal;
+      text-align: center;
+    }
+
+    input[type=text] {
+      width: 300px;
+      padding: 12px 20px;
+      border: 1px solid black;
+      border-radius: 9px;
+    }
+
+    button {
+      background-color: white;
+      border: 1px solid black;
+      border-radius: 9px;
+      padding: 12px 20px;
+      width: 343px;
+      margin-top: 5px;
+      margin-left: 2px;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="split left">
+    <div class="centered">
+      <h1 class="cool-words">
+        </h2style><i>~ Things Toad-Do Today ~</i></h1>
+      <div style="text-align: center; margin-right: 30px; padding-top: 40px;">
+        <img src="/toad.jpeg" alt="image of a toad">
+      </div>
+      </header>
+
+      <br><br>
+
+      <div style="text-align: center;">
+        <form>
+          <h3 class="cool-words">Add A Toad-Do</h3>
+          <input style="text-align: center; color: grey;" type="text" onfocus="this.value=''" name="todo"
+            value="e.g. Eat some flies..." />
+          <div class="todo error cool-words"></div>
+          <button class="cool-words">~ Post ~</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="split right">
+    <div class="centered">
+      <h2 class="cool-words" id="toad-do">Toad-Do's</h2>
+    </div>
+  </div>
+  <script defer>
+    const form = document.querySelector('form');
+    const todoError = document.querySelector('.todo.error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // reset errors
+      todoError.textContent = '';
+
+      // get values
+      const todo = form.todo.value;
+
+      form.todo.value = '';
+
+      try {
+        const res = await fetch('/api/v1/todos', {
+          method: 'POST',
+          body: JSON.stringify({ "contents": String(todo) }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+
+        if (data.errors) {
+          todoError.textContent = data.errors.slice(26);
+        }
+
+        if (data.data) {
+          const todo = data.data;
+          document.getElementById('toad-do').insertAdjacentHTML('afterend', `<p style>${todo.contents}</p>`);
+        }
+
+      }
+      catch (err) {
+        console.log(err);
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', async (event) => {
+      try {
+        const res = await fetch('/api/v1/todos', {
+          method: 'GET',
+        });
+        const data = await res.json();
+
+        if (data.errors) {
+          todoError.textContent = data.errors.slice(26);
+          return;
+        }
+
+        if (data.data) {
+          for (const todo of data.data) {
+            document.getElementById('toad-do').insertAdjacentHTML('afterend', `<p>${todo.contents}</p>`);
+          }
+
+        }
+
+      }
+      catch (err) {
+        console.log(err);
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,8 +1,8 @@
-const cookieParser = require('cookie-parser');
-const express = require('express');
-const app = express();
+// const cookieParser = require('cookie-parser');
+// const express = require('express');
+// const app = express();
 
-app.use(express.json());
-app.use(cookieParser());
+// app.use(express.json());
+// app.use(cookieParser());
 
-module.exports = app;
+// module.exports = app;

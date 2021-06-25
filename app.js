@@ -1,15 +1,17 @@
+'use strict';
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const tryify = require('./utils/tryify');
-const mundle = require('./middleware/mundle');
+// const mundle = require('./middleware/mundle');
 const kraken = require('kraken-js');
-const routes = require('./routes/routes.js');
 require('dotenv').config();
+const Path = require('path');
 
 const options = {
   onconfig: (config, next) => {
-
+    console.log('configuring...');
     next(null, config);
   }
 }
@@ -22,7 +24,7 @@ const port = process.env.PORT || 3000;
 // a JSON schema so I won't use Mongoose again after this project.
 const dbConnect = async (URI, PORT) => {
   const [data, error] = await tryify(mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }))
-  if (data) { app.listen(PORT, () => console.log(data)) }
+  if (data) { app.listen(PORT, () => console.log(`Server running on port ${PORT}...`)) }
   if (error) { console.log(error) }
 } 
 
@@ -31,7 +33,8 @@ dbConnect(dbURI, port);
 // Middleware Bundle
 // P.S. body-parser is deprecated. It's recomended to use 
 // the built in express body parser instead :)
-app.use(mundle);
+app.use(kraken(options));
 
-// App Routes
-app.use(routes);
+app.get('/', (req, res) => {
+  res.sendFile(Path.join(__dirname, '/views/home.html'));
+});
