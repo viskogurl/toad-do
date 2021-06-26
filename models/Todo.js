@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
 const todoSchema = new mongoose.Schema({
+  todoID: {
+    type: String,
+    required: [true, 'Error adding uuid'],
+  },
   contents: {
     type: String,
-    required: [true, 'Please enter a todo'],
+    required: [true, 'Please Enter A Toad-Do'],
   },
   date: {
     type: Date,
