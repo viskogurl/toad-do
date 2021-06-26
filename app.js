@@ -3,7 +3,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const tryify = require('./utils/tryify');
+const { tryify } = require('./utils/klar');
 // const mundle = require('./middleware/mundle');
 const kraken = require('kraken-js');
 require('dotenv').config();
@@ -22,6 +22,7 @@ const port = process.env.PORT || 3000;
 // Sorry for using Mongoose. I like how easy it is to create a schema.
 // I'm working on a generator which will convert my mongoose schema into
 // a JSON schema so I won't use Mongoose again after this project.
+mongoose.set("useFindAndModify", false);
 const dbConnect = async (URI, PORT) => {
   const [data, error] = await tryify(mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }))
   if (data) { app.listen(PORT, () => console.log(`Server running on port ${PORT}...`)) }
@@ -30,11 +31,8 @@ const dbConnect = async (URI, PORT) => {
 
 dbConnect(dbURI, port);
 
-// Middleware Bundle
-// P.S. body-parser is deprecated. It's recomended to use 
-// the built in express body parser instead :)
 app.use(kraken(options));
 
 app.get('/', (req, res) => {
-  res.sendFile(Path.join(__dirname, '/views/home.html'));
+  res.status(200).sendFile(Path.join(__dirname, '/views/home.html'));
 });
