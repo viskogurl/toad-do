@@ -24,7 +24,7 @@ module.exports.putTodo = async (id, contents) => {
     const todo = {
         todoID: uuidv4(),
         contents,
-        date: date.now().toISOString()
+        date: new Date().toISOString()
     };
     const [data, error] = await tryify(Todo.findOneAndReplace({ todoID: id }, todo, { new: true }));
     return data ?? throwify(error);
