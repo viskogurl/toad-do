@@ -3,7 +3,8 @@
 // Welcome to the meat and bones of Toad-Do.
 //
 // Klar (German for clean or crisp) is a simple utils library
-// meant to replace repetitive code blocks with simple functions.
+// meant to condense repetitive async-await code by replacing
+// it with simple functions.
 //
 // In 15 lines of code, Klar gets rid of the need for try-catching 
 // asyncronous function by returning the Promise data and error in 
