@@ -1,28 +1,41 @@
 'use strict';
 
 const Todo = require('../models/Todo');
-const tryify = require('../utils/tryify');
+const { tryify, throwify } = require('../utils/klar');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports.getTodos = async () => {
     const [data, error] = await tryify(Todo.find({}));
-    if (data) { return data; }
-    else { throw new Error(error); }
+    return data ?? throwify(error);
 }
 
 module.exports.postTodo = async (todo) => {
-    const [data, error] = await tryify(Todo.create(todo));
-    if (data) { return data; }
-    else { throw new Error(error); }
+    const { contents } = todo;
+    const [data, error] = await tryify(Todo.create({ todoID: uuidv4(), contents }));
+    return data ?? throwify(error);
 }
 
-module.exports.getTodo = (req, res) => {
+module.exports.getTodo = async (id) => {
+    const [data, error] = await tryify(Todo.findOne({ todoID: id }));
+    return data ?? throwify(error);
 }
 
-module.exports.putTodo = async (req, res) => {
+module.exports.putTodo = async (id, contents) => {
+    const todo = {
+        todoID: uuidv4(),
+        contents,
+        date: date.now().toISOString()
+    };
+    const [data, error] = await tryify(Todo.findOneAndReplace({ todoID: id }, todo, { new: true }));
+    return data ?? throwify(error);
 }
 
-module.exports.patchTodo = (req, res) => {
+module.exports.patchTodo = async (id, contents) => {
+    const [data, error] = await tryify(Todo.findOneAndUpdate({ todoID: id }, { contents }, { new: true }));
+    return data ?? throwify(error);
 } 
 
-module.exports.deleteTodo = (req, res) => {
+module.exports.deleteTodo = async (id) => {
+    const [data, error] = await tryify(Todo.findOneAndDelete({ todoID: id }));
+    return data ?? throwify(error);
 } 
