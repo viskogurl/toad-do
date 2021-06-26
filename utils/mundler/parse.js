@@ -7,7 +7,7 @@ const Path = require('path');
 
 const parse = async (opt) => {
   const mwArr = [];
-  const path = opt || '../../config/config.json';
+  const path = opt || '../../config/test.json';
 
   const [ data, error ] = await tryify(fs.readFile(Path.join(__dirname, path), 'utf-8'));
   if (error) { throw new Error('parse broke...') };
