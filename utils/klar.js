@@ -7,8 +7,8 @@
 // the error handling into one place.
 //
 // In 20 lines of code, Klar gets rid of the need for try-catching 
-// asyncronous function by returning the Promise data and error in 
-// and Array.
+// asyncronous function by returning the Promise data or error in 
+// an Array.
 
 const tryify = async (promise) => {
     try {
