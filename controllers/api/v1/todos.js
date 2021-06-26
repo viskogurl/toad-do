@@ -1,7 +1,7 @@
 'use strict';
 
 const coordinator = require('../../../coordinators/todos');
-const tryify = require('../../../utils/tryify');
+const { tryify, resify } = require('../../../utils/klar');
 
 module.exports = (router) => {
   router.get('/', getTodos);
@@ -14,35 +14,37 @@ module.exports = (router) => {
 
 const getTodos = async (req, res, next) => {
   const [data, error] = await tryify(coordinator.getTodos());
-  if (data) {
-    res.status(200).json({ data });
-  } else {
-    res.status(400).json({ "errors": String(error.message) });
-  }
+  resify(res, data, error);
 };
 
 const postTodo = async (req, res, next) => {
   const todo = req.body;
   const [data, error] = await tryify(coordinator.postTodo(todo));
-  if (data) {
-    res.status(200).json({ data });
-  } else {
-    res.status(400).json({ "errors": String(error.message) });
-  }
+  resify(res, data, error);
 };
 
 const getTodo = async (req, res, next) => {
-  console.log('getTodo');
+  const id = req.params.id;
+  const [data, error] = await tryify(coordinator.getTodo(id));
+  resify(res, data, error);
 };
 
 const putTodo = async (req, res, next) => {
-  console.log('putTodo');
+  const id = req.params.id;
+  const { contents } = req.body;
+  const [data, error] = await tryify(coordinator.putTodo(id, contents));
+  resify(res, data, error);
 };
 
 const patchTodo = async (req, res, next) => {
-  console.log('patchTodo');
+  const id = req.params.id;
+  const { contents } = req.body;
+  const [data, error] = await tryify(coordinator.patchTodo(id, contents));
+  resify(res, data, error);
 };
 
 const deleteTodo = async (req, res, next) => {
-  console.log('deleteTodo');
+  const id = req.params.id;
+  const [data, error] = await tryify(coordinator.deleteTodo(id));
+  resify(res, data, error);
 };
