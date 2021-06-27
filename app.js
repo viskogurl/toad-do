@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const { tryify } = require('./utils/klar');
-// const mundle = require('./middleware/mundle');
+const colorChecker = require('./middleware/colorChecker');
 const kraken = require('kraken-js');
 require('dotenv').config();
 const Path = require('path');
