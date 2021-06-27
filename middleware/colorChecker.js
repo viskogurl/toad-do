@@ -1,3 +1,7 @@
+/**
+ * colorChecker returns the middleware function.
+ * @returns colorChecker
+ */
 module.exports = colorChecker = () => {
   return colorChecker = (req, res, next) => {
     const hexColorMap = {
