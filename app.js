@@ -23,6 +23,11 @@ const port = process.env.PORT || 3000;
 // I'm working on a generator which will convert my mongoose schema into
 // a JSON schema so I won't use Mongoose again after this project.
 mongoose.set("useFindAndModify", false);
+/**
+ * Database connection function.
+ * @param {string} URI - Mongo Atlas URI string.
+ * @param {number} PORT - Port number.
+ */
 const dbConnect = async (URI, PORT) => {
   const [data, error] = await tryify(mongoose.connect(URI, { poolSize: 5, useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }))
   if (data) { app.listen(PORT, () => console.log(`Server running on port ${PORT}...`)) }
