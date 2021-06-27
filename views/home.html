@@ -88,7 +88,8 @@
   <div class="split left">
     <div class="centered">
       <h1 class="cool-words">
-        <i>~ Things Toad-Do Today ~</i></h1>
+        <i>~ Things Toad-Do Today ~</i>
+      </h1>
       <div style="text-align: center; margin-right: 30px; padding-top: 40px;">
         <img src="/toad.jpeg" alt="image of a toad">
       </div>
@@ -117,12 +118,16 @@
   </div>
   <script defer>
 
+
+    const form = document.querySelector('form');
+    const todoError = document.querySelector('.todo.error');
+
     const remove = async (id) => {
       try {
         const res = await fetch(`/api/v1/todos/${id}`, {
           method: 'DELETE'
         });
-        
+
         const todo = document.getElementById(`${id}`);
         todo.parentNode.removeChild(todo);
 
@@ -132,8 +137,15 @@
       }
     }
 
-    const form = document.querySelector('form');
-    const todoError = document.querySelector('.todo.error');
+    const templater = (todo) => {
+      return `<span id="${todo.todoID}">
+                <span style="color:${todo.color};">
+                  ${todo.contents}
+                </span>
+                <a onclick="remove('${todo.todoID}');"> &otimes; </a>
+                <br>
+              </span>`
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -154,7 +166,7 @@
           todoError.textContent = 'Please Enter A Color';
           throw new Error('no color')
         }
-        
+
         if (todo === 'e.g. Eat some flies...' || todo === '') {
           todoError.textContent = 'Please Enter A Toad-Do';
           throw new Error('no Toad-Do');
@@ -173,7 +185,7 @@
 
         if (data.data) {
           const todo = data.data;
-          document.getElementById('toad-do').insertAdjacentHTML('afterend', `<span id="${todo.todoID}"><span style="color:${todo.color};">${todo.contents}</span><a onclick="remove('${todo.todoID}');"> &otimes; </a></span><br>`);
+          document.getElementById('toad-do').insertAdjacentHTML('afterend', templater(todo));
         }
 
       }
@@ -196,7 +208,7 @@
 
         if (data.data) {
           for (const todo of data.data) {
-            document.getElementById('toad-do').insertAdjacentHTML('afterend', `<span id="${todo.todoID}"><span style="color:${todo.color};">${todo.contents}</span><a onclick="remove('${todo.todoID}');"> &otimes; </a></span><br>`);
+            document.getElementById('toad-do').insertAdjacentHTML('afterend', templater(todo));
           }
 
         }
