@@ -24,7 +24,7 @@ const port = process.env.PORT || 3000;
 // a JSON schema so I won't use Mongoose again after this project.
 mongoose.set("useFindAndModify", false);
 const dbConnect = async (URI, PORT) => {
-  const [data, error] = await tryify(mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }))
+  const [data, error] = await tryify(mongoose.connect(URI, { poolSize: 5, useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }))
   if (data) { app.listen(PORT, () => console.log(`Server running on port ${PORT}...`)) }
   if (error) { console.log(error) }
 } 
