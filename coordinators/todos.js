@@ -10,8 +10,8 @@ module.exports.getTodos = async () => {
 }
 
 module.exports.postTodo = async (todo) => {
-    const { contents } = todo;
-    const [data, error] = await tryify(Todo.create({ todoID: uuidv4(), contents }));
+    const { color, contents } = todo;
+    const [data, error] = await tryify(Todo.create({ todoID: uuidv4(), color, contents }));
     return data ?? throwify(error);
 }
 
@@ -20,9 +20,10 @@ module.exports.getTodo = async (id) => {
     return data ?? throwify(error);
 }
 
-module.exports.putTodo = async (id, contents) => {
+module.exports.putTodo = async (id, color, contents) => {
     const todo = {
         todoID: uuidv4(),
+        color,
         contents,
         date: new Date().toISOString()
     };
@@ -30,8 +31,11 @@ module.exports.putTodo = async (id, contents) => {
     return data ?? throwify(error);
 }
 
-module.exports.patchTodo = async (id, contents) => {
-    const [data, error] = await tryify(Todo.findOneAndUpdate({ todoID: id }, { contents }, { new: true }));
+module.exports.patchTodo = async (id, color, contents) => {
+    const todo = (color && contents) ?  { color, contents }
+        : color ? { color }
+        : { contents };
+    const [data, error] = await tryify(Todo.findOneAndUpdate({ todoID: id }, todo, { new: true }));
     return data ?? throwify(error);
 } 
 

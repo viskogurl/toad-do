@@ -98,7 +98,9 @@
 
       <div style="text-align: center;">
         <form>
-          <h3 class="cool-words">Add A Toad-Do</h3>
+          <h3 class="cool-words">Add A Color & Toad-Do</h3>
+          <input style="margin: 5px; text-align: center; color: grey;" type="text" onfocus="this.value=''" name="color"
+            value="e.g. blue" />
           <input style="text-align: center; color: grey;" type="text" onfocus="this.value=''" name="todo"
             value="e.g. Eat some flies..." />
           <div class="todo error cool-words"></div>
@@ -141,18 +143,26 @@
 
       // get values
       const todo = form.todo.value;
+      const color = form.color.value;
 
       form.todo.value = '';
+      console.log(todo, color);
 
       try {
+
+        if (color === 'e.g. blue' || color === '') {
+          todoError.textContent = 'Please Enter A Color';
+          throw new Error('no color')
+        }
+        
         if (todo === 'e.g. Eat some flies...' || todo === '') {
           todoError.textContent = 'Please Enter A Toad-Do';
-          throw new Error('no input');
+          throw new Error('no Toad-Do');
         }
 
         const res = await fetch('/api/v1/todos', {
           method: 'POST',
-          body: JSON.stringify({ "contents": String(todo) }),
+          body: JSON.stringify({ "color": String(color), "contents": String(todo) }),
           headers: { 'Content-Type': 'application/json' }
         });
         const data = await res.json();
@@ -163,7 +173,7 @@
 
         if (data.data) {
           const todo = data.data;
-          document.getElementById('toad-do').insertAdjacentHTML('afterend', `<span id="${todo.todoID}"><span>${todo.contents}</span><a onclick="remove('${todo.todoID}');"> &otimes; </a></span><br>`);
+          document.getElementById('toad-do').insertAdjacentHTML('afterend', `<span id="${todo.todoID}"><span style="color:${todo.color};">${todo.contents}</span><a onclick="remove('${todo.todoID}');"> &otimes; </a></span><br>`);
         }
 
       }
@@ -186,7 +196,7 @@
 
         if (data.data) {
           for (const todo of data.data) {
-            document.getElementById('toad-do').insertAdjacentHTML('afterend', `<span id="${todo.todoID}"><span>${todo.contents}</span><a onclick="remove('${todo.todoID}');"> &otimes; </a></span><br>`);
+            document.getElementById('toad-do').insertAdjacentHTML('afterend', `<span id="${todo.todoID}"><span style="color:${todo.color};">${todo.contents}</span><a onclick="remove('${todo.todoID}');"> &otimes; </a></span><br>`);
           }
 
         }
