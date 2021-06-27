@@ -5,6 +5,10 @@ const todoSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Error adding uuid'],
   },
+  color: {
+    type: String,
+    required: [true, 'Please Enter A Color'],
+  },
   contents: {
     type: String,
     required: [true, 'Please Enter A Toad-Do'],
