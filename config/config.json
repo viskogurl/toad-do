@@ -1,11 +1,19 @@
 {
-  "middleware" : {
+  "middleware": {
     "session": null,
     "appsec": null,
     "router": {
       "module": {
         "arguments": [{ "directory": "path:./controllers" }]
       }
+    },
+    "colorChecker": {
+      "enabled": true,
+      "priority": 119,
+      "module": {
+        "name": "path:./middleware/colorChecker"
+      }
     }
   }
+  
 }
