@@ -2,7 +2,7 @@
 
 // Welcome to the meat and bones of Toad-Do.
 //
-// Klar (German for clean or crisp) is a simple utils library
+// Klar (German for clean or clear) is a simple utils library
 // meant to replace repetitive async-await code by condensing
 // the error handling into one place.
 //
@@ -14,8 +14,8 @@ const tryify = async (promise) => {
     try {
         const data = await promise;
         return [data, null];
-    } catch (err) {
-        return [null, err];
+    } catch (error) {
+        return [null, error];
     }
 }
 
@@ -24,7 +24,7 @@ const throwify = (error) => {
 }
 
 const resify = (res, data, error) => {
-    data ? res.status(200).json({ data }) : res.status(404).json({ "errors": String(error) });
+    return data ? res.status(200).json({ data }) : res.status(404).json({ "errors": String(error) });
 }
 
 module.exports = { tryify, throwify, resify };
