@@ -4,7 +4,6 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const { tryify } = require('./utils/klar');
-const colorChecker = require('./middleware/colorChecker');
 const kraken = require('kraken-js');
 require('dotenv').config();
 const Path = require('path');
@@ -19,9 +18,7 @@ const options = {
 const dbURI = process.env.dbURI;
 const port = process.env.PORT || 3000;
 
-// Sorry for using Mongoose. I like how easy it is to create a schema.
-// I'm working on a generator which will convert my mongoose schema into
-// a JSON schema so I won't use Mongoose again after this project.
+// Sorry for using Mongoose. I won't use it again after this project.
 mongoose.set("useFindAndModify", false);
 /**
  * Database connection function.
