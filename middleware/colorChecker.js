@@ -12,7 +12,7 @@ module.exports = colorChecker = () => {
 
     if (req.body.color) {
       const color = req.body.color;
-      req.body.color = hexColorMap[color.toLowerCase()] ?? '#000000';
+      req.body.color = hexColorMap[color.toLowerCase()] || '#000000';
     } 
     next();
   };
