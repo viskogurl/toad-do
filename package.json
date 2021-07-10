@@ -4,9 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "config": "node ./utils/mundler/mundler.js",
-    "start": "nodemon app.js",
-    "serve": "npm run config && npm run start"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
