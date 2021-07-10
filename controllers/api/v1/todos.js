@@ -20,6 +20,7 @@ const getTodos = async (req, res, next) => {
 const postTodo = async (req, res, next) => {
   const { color, contents } = req.body;
   const [data, error] = await tryify(coordinator.postTodo({ color, contents }));
+  console.log(data, error)
   return resify(res, data, error);
 };
 

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* Split the screen in half */
+    .split {
+      height: 100%;
+      width: 50%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      overflow: hidden;
+      padding-top: 20px;
+    }
+
+    /* Control the left side */
+    .left {
+      left: 7%;
+    }
+
+    /* Control the right side */
+    .right {
+      right: 7%;
+    }
+
+    /* If you want the content centered horizontally and vertically */
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .cool-words {
+      font-family: optima, arial, helvetica;
+      font-weight: normal;
+      text-align: center;
+      color: rgb(34, 34, 34);
+    }
+
+    input[type=text] {
+      width: 300px;
+      padding: 12px 20px;
+      border: 1px solid black;
+      border-radius: 9px;
+    }
+
+    input[type=text]:hover {
+      opacity: 0.5;
+    }
+
+    button {
+      background-color: white;
+      opacity: 1;
+      border: 1px solid black;
+      border-radius: 9px;
+      padding: 12px 20px;
+      width: 343px;
+      margin-top: 5px;
+      margin-left: 2px;
+      cursor: pointer;
+
+    }
+
+    button:hover {
+      opacity: 0.5;
+    }
+
+    a {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a:hover {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+
+<body>
+  
+
+  <div class="split left">
+    <div class="centered">
+      <h1>Mongo</h1>
+      <p id="mongo">null</p>
+      <button id="button">---> moving on ---></button>
+    </div>
+  </div>
+
+  <div class="split right">
+    <div class="centered">
+      <h1>Schnell</h1>
+      <p id="schnell">null</p>
+    </div>
+  </div>
+  <script defer>
+
+
+    const mongo = document.querySelector('#mongo');
+    const schnell = document.querySelector('#schnell');
+    const button = document.getElementById('button');
+
+    const mongoArr = [];
+    const schnellArr = [];
+
+    const newInterval = () => {
+      setInterval(() => {
+        count++;
+        if (mongoArr.length < 3) {
+          clearInterval(newInterval);
+        }
+        (async () => {
+          try {
+            const t1 = Date.now();
+            const res = await fetch('/api/v1/todos', {
+              method: 'GET',
+            });
+            const num = Date.now() - t1;
+            console.log(num);
+            if (count > 55) { schnellArr.push(num) }
+            console.log(count);
+            const resTime = Math.round(schnellArr.reduce((a, b) => a + b, 0) / schnellArr.length);
+            schnell.innerText = resTime;
+
+          }
+          catch (err) {
+            console.log(err);
+          }
+        })();
+      }, 3000);
+    }
+
+    let count = 0;
+
+
+    const interval = setInterval(() => {
+      count++;
+      clearInterval(newInterval);
+      if (mongoArr.length > 50) {
+        clearInterval(interval);
+      }
+      (async () => {
+        try {
+          const t1 = Date.now();
+          const res = await fetch('/api/v1/todos', {
+            method: 'GET',
+          });
+          const num = Date.now() - t1;
+          console.log(num);
+          if (count > 3) { mongoArr.push(num) }
+          const resTime = Math.round(mongoArr.reduce((a, b) => a + b, 0) / mongoArr.length);
+          mongo.innerText = resTime;
+
+        }
+        catch (err) {
+          console.log(err);
+        }
+      })();
+    }, 3000);
+
+button.addEventListener('click', (event) => {
+  newInterval();
+  button.hidden = true;
+});
+  </script>
+</body>
+
+</html>

@@ -7,6 +7,8 @@ const { tryify } = require('./utils/klar');
 const kraken = require('kraken-js');
 require('dotenv').config();
 const Path = require('path');
+const snail = require('./utils/schnell');
+const compress = require('compression');
 
 const options = {
   onconfig: (config, next) => {
@@ -15,8 +17,10 @@ const options = {
   }
 }
 
+//app.use(compress());
+
 const dbURI = process.env.dbURI;
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 // Sorry for using Mongoose. I won't use it again after this project.
 mongoose.set("useFindAndModify", false);
@@ -28,7 +32,7 @@ mongoose.set("useFindAndModify", false);
 const dbConnect = async (URI, PORT) => {
   const [data, error] = await tryify(mongoose.connect(URI, { poolSize: 5, useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }))
   if (data) { app.listen(PORT, () => console.log(`Server running on port ${PORT}...`)) }
-  if (error) { console.log(error) }
+  if (error) { console.log(error) };
 } 
 
 dbConnect(dbURI, port);
@@ -37,4 +41,8 @@ app.use(kraken(options));
 
 app.get('/', (req, res) => {
   res.status(200).sendFile(Path.join(__dirname, '/views/home.html'));
+});
+
+app.get('/stats', (req, res) => {
+  res.status(200).sendFile(Path.join(__dirname, '/views/stats.html'));
 });

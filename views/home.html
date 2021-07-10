@@ -196,9 +196,12 @@
 
     window.addEventListener('DOMContentLoaded', async (event) => {
       try {
+        const t1 = Date.now();
         const res = await fetch('/api/v1/todos', {
           method: 'GET',
         });
+        const t2 = Date.now();
+        console.log(t1 - t2);
         const data = await res.json();
 
         if (data.errors) {
