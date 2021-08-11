@@ -28,7 +28,7 @@ const fs = require('fs/promises');
  */
 module.exports.getTodos = async () => {
     const [data, error] = await snail.all();
-    return data ?? throwify(error);
+    return data || throwify(error);
 }
 
 /**
@@ -39,7 +39,7 @@ module.exports.getTodos = async () => {
 module.exports.postTodo = async (todo) => {
     const [data, error] = await snail.save(todo);
     console.log(data, error)
-    return data ?? throwify(error);
+    return data || throwify(error);
 }
 
 /**
@@ -49,7 +49,7 @@ module.exports.postTodo = async (todo) => {
  */
 module.exports.getTodo = async (id) => {
     const [data, error] = await snail.find(id);
-    return data ?? throwify(error);
+    return data || throwify(error);
 }
 
 /**
@@ -67,7 +67,7 @@ module.exports.putTodo = async (id, color, contents) => {
         date: new Date().toISOString()
     };
     const [data, error] = await tryify(Todo.findOneAndReplace({ todoID: id }, todo, { new: true }));
-    return data ?? throwify(error);
+    return data || throwify(error);
 }
 
 /**
@@ -82,7 +82,7 @@ module.exports.patchTodo = async (id, color, contents) => {
         : color ? { color }
         : { contents };
     const [data, error] = await tryify(Todo.findOneAndUpdate({ todoID: id }, todo, { new: true }));
-    return data ?? throwify(error);
+    return data || throwify(error);
 } 
 
 /**
@@ -92,5 +92,5 @@ module.exports.patchTodo = async (id, color, contents) => {
  */
 module.exports.deleteTodo = async (id) => {
     const [data, error] = await tryify(Todo.findOneAndDelete({ todoID: id }));
-    return data ?? throwify(error);
+    return data || throwify(error);
 } 
